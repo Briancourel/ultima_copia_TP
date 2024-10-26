@@ -18,7 +18,7 @@ namespace TP_INTEGRAL_PROGRAMACION
         static bool existe = false;
         static int opcion, cantidadAIngresar;
         static string productoBuscado, productoAEliminar;
-
+        
 
         public struct Datos
         {
@@ -183,8 +183,9 @@ namespace TP_INTEGRAL_PROGRAMACION
         static void VerInformacionDeProductos(List<Datos[]> cervezas)
         {
             Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Clear();
             bool continuarViendo = true;
-            Console.Clear ();
+            
             while (continuarViendo)
             {
                 //COMPARA SI HAY DATOS DENTRO DE LA LISTA
@@ -226,12 +227,14 @@ namespace TP_INTEGRAL_PROGRAMACION
                 Console.Clear();
                 continuarViendo = false;
             }
+            Console.Clear();
         }
         static void EliminarProducto(List<Datos[]> cervezas, string productoAEliminar)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            bool continuarEliminando = true;
             Console.Clear();
+            bool continuarEliminando = true;
+            
             while (continuarEliminando)
             {
                 //SOLICITAMOS AL USURARIO EL NOMBRE DEL PRODUCTO
@@ -260,7 +263,7 @@ namespace TP_INTEGRAL_PROGRAMACION
                             cervezas.RemoveAt(c);
                            
                             Console.WriteLine(" ╔════════════════════════════════════════════════════════════════════════════════╗");
-                            Console.WriteLine($" ║     EL PRODUCTO {productoAEliminar} FUE ELIMINADO EXITOSAMENTE DE LA LISTA                   ║");
+                            Console.WriteLine($" ║     EL PRODUCTO {productoAEliminar.ToUpper()} FUE ELIMINADO EXITOSAMENTE DE LA LISTA                   ║");
                             Console.WriteLine(" ╚════════════════════════════════════════════════════════════════════════════════╝");
 
                             encontrado = true;
@@ -279,11 +282,12 @@ namespace TP_INTEGRAL_PROGRAMACION
                     Console.WriteLine("  ╚════════════════════════════════════════════════════════════════════════════════╝");
                 }
             }
+            Console.Clear();
         }
         static void IngresarNuevoProducto(List<Datos[]> cervezas, int cantidadAIngresar)
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Clear ();
+            Console.Clear();
             bool continuarIngresando = true;
 
             while (continuarIngresando)
@@ -351,6 +355,7 @@ namespace TP_INTEGRAL_PROGRAMACION
                 }
             }
             Console.Clear();
+            
         }
         static void StockActualizado(List<Datos[]> cervezas, int cantidadAIngresar, string productoAEliminar)
         {
@@ -374,60 +379,91 @@ namespace TP_INTEGRAL_PROGRAMACION
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Clear();
-            if (cervezas.Count == 0)
+            bool continuarVentas = true;
+
+            while (continuarVentas)
             {
-                Console.WriteLine("╔═════════════════════════════════════╗");
-                Console.WriteLine("║     NO HAY PRODUCTOS DISPONIBLES    ║");
-                Console.WriteLine("╚═════════════════════════════════════╝");
-                return;
-            }
-            Console.WriteLine("╔══════════════════════════════════════════════════════════╗");
-            Console.WriteLine("║     SELECCIONE EL NUMERO DEL PRODUCTO QUE DESEA VENDER   ║", cervezas.Count);
-            Console.WriteLine("╚══════════════════════════════════════════════════════════╝");
 
-            for (int i = 0; i < cervezas.Count; i++)
-            {
-                // [0] se usa porque en este caso los productos están dentro de un arreglo(de tipo Cerveza[]),
-                // y estamos accediendo al primer(y único) elemento de ese arreglo, donde con el for recorro los indices de la lista 
-                // para ingresar en dichos arreglos y asi mostrarlo.
-                Console.WriteLine($"Producto {i + 1}: {cervezas[i][0].Estilo}, Presentación: {cervezas[i][0].Presentacion}, Stock: {cervezas[i][0].Stock}");
-            }
-            int productoSeleccionado = int.Parse(Console.ReadLine());
-
-            if (productoSeleccionado > 0 && productoSeleccionado <= cervezas.Count)
-            {
-                productoSeleccionado--; //  se hace productoSeleccionado-- para ajustar el número del producto a su índice real en la lista.
-
-                // Muestra información del producto seleccionado
-                Console.WriteLine($"Producto seleccionado: {cervezas[productoSeleccionado][0].Estilo}, Presentación: {cervezas[productoSeleccionado][0].Presentacion}, Stock: {cervezas[productoSeleccionado][0].Stock}");
-
-
-                Console.WriteLine("Ingrese la cantidad que desea vender:");
-                int cantidadVendida = int.Parse(Console.ReadLine());
-
-                // si la cantidad que desea vender es meyor a  0 entro en el if...
-                if (cantidadVendida > 0)
+                if (cervezas.Count == 0)
                 {
-                    // Verifica el indice 0 del arreglo seleccionado, si la cantidad vendida es inferior o igual al stock de dicho indice del arreglo dentro de la lista.
-                    if (cantidadVendida <= cervezas[productoSeleccionado][0].Stock)
+                    Console.WriteLine("╔═════════════════════════════════════╗");
+                    Console.WriteLine("║     NO HAY PRODUCTOS DISPONIBLES    ║");
+                    Console.WriteLine("╚═════════════════════════════════════╝");
+                    return;
+                }
+                Console.WriteLine("╔═══════════════════════════════════════════════════════════════════════════════╗");
+                Console.WriteLine("║     SELECCIONE EL NUMERO DEL PRODUCTO QUE DESEA VENDER O 0 (cero) PARA SALIR  ║", cervezas.Count);
+                Console.WriteLine("╚═══════════════════════════════════════════════════════════════════════════════╝");
+                for (int i = 0; i < cervezas.Count; i++)
+                {
+                    // [0] se usa porque en este caso los productos están dentro de un arreglo(de tipo Cerveza[]),
+                    // y estamos accediendo al primer(y único) elemento de ese arreglo, donde con el for recorro los indices de la lista 
+                    // para ingresar en dichos arreglos y asi mostrarlo.
+                    Console.WriteLine($"Producto {i + 1}: {cervezas[i][0].Estilo}, Presentación: {cervezas[i][0].Presentacion}, Stock: {cervezas[i][0].Stock}");
+                }
+                int productoSeleccionado = int.Parse(Console.ReadLine());
+
+                if (productoSeleccionado == 0)
+                {
+                    continuarVentas = false;
+                    continue;
+                }
+
+
+                /*
+                Console.WriteLine("╔══════════════════════════════════════════════════════════╗");
+                Console.WriteLine("║     SELECCIONE EL NUMERO DEL PRODUCTO QUE DESEA VENDER   ║", cervezas.Count);
+                Console.WriteLine("╚══════════════════════════════════════════════════════════╝");
+                
+                for (int i = 0; i < cervezas.Count; i++)
+                {
+                    // [0] se usa porque en este caso los productos están dentro de un arreglo(de tipo Cerveza[]),
+                    // y estamos accediendo al primer(y único) elemento de ese arreglo, donde con el for recorro los indices de la lista 
+                    // para ingresar en dichos arreglos y asi mostrarlo.
+                    Console.WriteLine($"Producto {i + 1}: {cervezas[i][0].Estilo}, Presentación: {cervezas[i][0].Presentacion}, Stock: {cervezas[i][0].Stock}");
+                }
+                */
+
+
+
+                if (productoSeleccionado > 0 && productoSeleccionado <= cervezas.Count)
+                {
+                    productoSeleccionado--; //  se hace productoSeleccionado-- para ajustar el número del producto a su índice real en la lista.
+
+                    // Muestra información del producto seleccionado
+                    Console.WriteLine($"Producto seleccionado: {cervezas[productoSeleccionado][0].Estilo}, Presentación: {cervezas[productoSeleccionado][0].Presentacion}, Stock: {cervezas[productoSeleccionado][0].Stock}");
+
+
+                    Console.WriteLine("Ingrese la cantidad que desea vender:");
+                    int cantidadVendida = int.Parse(Console.ReadLine());
+
+                    // si la cantidad que desea vender es meyor a  0 entro en el if...
+                    if (cantidadVendida > 0)
                     {
-                        // Llama a la función que actualiza el stock
-                        StockConProductoVendido(cervezas, productoSeleccionado, cantidadVendida);
+                        // Verifica el indice 0 del arreglo seleccionado, si la cantidad vendida es inferior o igual al stock de dicho indice del arreglo dentro de la lista.
+                        if (cantidadVendida <= cervezas[productoSeleccionado][0].Stock)
+                        {
+
+                            // Llama a la función que actualiza el stock
+                            StockConProductoVendido(cervezas, productoSeleccionado, cantidadVendida);
+                        }
+                        else
+                        {
+                            Console.WriteLine("No hay suficiente stock para realizar la venta.");
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("No hay suficiente stock para realizar la venta.");
+                        Console.WriteLine("Cantidad inválida. Ingrese un número mayor a 0.");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Cantidad inválida. Ingrese un número mayor a 0.");
+                    Console.WriteLine("Producto seleccionado inválido.");
                 }
+                
             }
-            else
-            {
-                Console.WriteLine("Producto seleccionado inválido.");
-            }
+            Console.Clear();
         }
 
         // Función que actualiza el stock después de la venta
